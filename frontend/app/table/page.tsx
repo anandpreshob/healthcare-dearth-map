@@ -22,7 +22,7 @@ export default function TablePage() {
       <DataTable data={data ?? []} isLoading={isLoading} />
 
       {data && (
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-text-muted">
           Showing {data.length} counties
         </p>
       )}

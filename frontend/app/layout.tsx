@@ -2,10 +2,13 @@
 
 import "./globals.css";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { Inter } from "next/font/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+
+const inter = Inter({ subsets: ["latin"] });
 
 function NavLink({
   href,
@@ -20,10 +23,10 @@ function NavLink({
   return (
     <Link
       href={href}
-      className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+      className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
         isActive
-          ? "bg-blue-700 text-white"
-          : "text-blue-100 hover:bg-blue-600 hover:text-white"
+          ? "bg-accent/20 text-accent shadow-[0_0_8px_rgba(59,130,246,0.3)]"
+          : "text-text-secondary hover:text-text-primary hover:bg-white/[0.05]"
       }`}
     >
       {children}
@@ -49,7 +52,7 @@ export default function RootLayout({
   );
 
   return (
-    <html lang="en">
+    <html lang="en" className={inter.className}>
       <head>
         <title>Healthcare Dearth Map</title>
         <meta
@@ -59,21 +62,33 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col">
         <QueryClientProvider client={queryClient}>
-          <nav className="bg-blue-800 text-white shadow">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between h-14">
-                <Link href="/" className="text-lg font-bold tracking-tight">
-                  Healthcare Dearth Map
-                </Link>
-                <div className="flex gap-1">
-                  <NavLink href="/">Map</NavLink>
-                  <NavLink href="/table">Table</NavLink>
-                  <NavLink href="/about">About</NavLink>
-                </div>
-              </div>
+          <nav className="fixed top-0 left-0 right-0 z-50 h-10 bg-surface-800/90 backdrop-blur-md border-b border-white/[0.06] flex items-center px-4">
+            <Link href="/" className="flex items-center gap-2 mr-6">
+              <svg
+                className="w-5 h-5 text-accent"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 21c-4.97-4.97-8-8.03-8-11a8 8 0 1116 0c0 2.97-3.03 6.03-8 11z"
+                />
+                <circle cx="12" cy="10" r="2.5" fill="currentColor" />
+              </svg>
+              <span className="text-sm font-semibold text-text-primary tracking-tight">
+                Healthcare Dearth Map
+              </span>
+            </Link>
+            <div className="flex gap-1">
+              <NavLink href="/">Map</NavLink>
+              <NavLink href="/table">Table</NavLink>
+              <NavLink href="/about">About</NavLink>
             </div>
           </nav>
-          <main className="flex-1">{children}</main>
+          <main className="pt-10 flex-1">{children}</main>
         </QueryClientProvider>
       </body>
     </html>

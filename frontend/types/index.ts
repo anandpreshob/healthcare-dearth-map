@@ -56,6 +56,7 @@ export interface GeoJSONFeatureProperties {
   dearth_label: string | null;
   provider_count: number | null;
   provider_density: number | null;
+  hasData: boolean;
 }
 
 export interface GeoJSONFeature {

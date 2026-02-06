@@ -63,19 +63,19 @@ export default function DataTable({ data, isLoading }: DataTableProps) {
 
   if (isLoading) {
     return (
-      <div className="text-center py-10 text-gray-500">Loading data...</div>
+      <div className="text-center py-10 text-text-muted">Loading data...</div>
     );
   }
 
   return (
-    <div className="overflow-x-auto border rounded-lg">
+    <div className="overflow-x-auto border border-white/[0.06] rounded-lg">
       <table className="w-full text-sm">
-        <thead className="bg-gray-50 border-b">
+        <thead className="bg-surface-700/80 border-b border-white/[0.06]">
           <tr>
             {COLUMNS.map((col) => (
               <th
                 key={col.key}
-                className={`px-3 py-2 font-medium text-gray-600 cursor-pointer select-none hover:bg-gray-100 ${
+                className={`px-3 py-2 font-medium text-text-muted cursor-pointer select-none hover:bg-white/[0.03] ${
                   col.align === "right" ? "text-right" : "text-left"
                 }`}
                 onClick={() => handleSort(col.key)}
@@ -92,10 +92,13 @@ export default function DataTable({ data, isLoading }: DataTableProps) {
         </thead>
         <tbody>
           {sorted.map((row) => (
-            <tr key={row.fips} className="border-t hover:bg-gray-50">
-              <td className="px-3 py-2">{row.name}</td>
-              <td className="px-3 py-2">{row.state}</td>
-              <td className="px-3 py-2 text-right">
+            <tr
+              key={row.fips}
+              className="border-t border-white/[0.06] hover:bg-white/[0.03]"
+            >
+              <td className="px-3 py-2 text-text-primary">{row.name}</td>
+              <td className="px-3 py-2 text-text-secondary">{row.state}</td>
+              <td className="px-3 py-2 text-right text-text-secondary font-mono">
                 {row.population?.toLocaleString() ?? "N/A"}
               </td>
               <td className="px-3 py-2 text-right">
@@ -107,17 +110,21 @@ export default function DataTable({ data, isLoading }: DataTableProps) {
                         backgroundColor: getColorForScore(row.dearth_score),
                       }}
                     />
-                    {Math.round(row.dearth_score)}
+                    <span className="font-mono text-text-primary">
+                      {Math.round(row.dearth_score)}
+                    </span>
                   </>
                 ) : (
-                  "N/A"
+                  <span className="text-text-muted">N/A</span>
                 )}
               </td>
-              <td className="px-3 py-2">{row.dearth_label ?? "N/A"}</td>
-              <td className="px-3 py-2 text-right">
+              <td className="px-3 py-2 text-text-secondary">
+                {row.dearth_label ?? "N/A"}
+              </td>
+              <td className="px-3 py-2 text-right font-mono text-text-secondary">
                 {row.provider_count ?? 0}
               </td>
-              <td className="px-3 py-2 text-right">
+              <td className="px-3 py-2 text-right font-mono text-text-secondary">
                 {row.provider_density != null
                   ? row.provider_density.toFixed(2)
                   : "N/A"}
@@ -128,7 +135,7 @@ export default function DataTable({ data, isLoading }: DataTableProps) {
             <tr>
               <td
                 colSpan={COLUMNS.length}
-                className="px-3 py-6 text-center text-gray-400"
+                className="px-3 py-6 text-center text-text-muted"
               >
                 No data available
               </td>

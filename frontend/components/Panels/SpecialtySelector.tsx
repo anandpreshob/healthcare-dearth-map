@@ -17,13 +17,13 @@ export default function SpecialtySelector({
     <div>
       <label
         htmlFor="specialty-select"
-        className="block text-sm font-medium text-gray-700 mb-1"
+        className="block text-sm font-medium text-text-secondary mb-1"
       >
         Specialty
       </label>
       <select
         id="specialty-select"
-        className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+        className="w-full rounded-lg border border-white/[0.08] bg-surface-700 px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent appearance-none cursor-pointer"
         value={value ?? ""}
         onChange={(e) => {
           const v = e.target.value;

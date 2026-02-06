@@ -1,5 +1,3 @@
-import json
-
 from fastapi import APIRouter, Query
 from fastapi.responses import JSONResponse
 
@@ -14,8 +12,8 @@ async def counties_geojson(
 ):
     """
     Return a GeoJSON FeatureCollection of all counties with dearth scores
-    for the given specialty. Each feature has county boundary geometry from
-    PostGIS and dearth_score properties for MapLibre GL choropleth rendering.
+    for the given specialty. Geometry is omitted — the frontend merges
+    these properties with us-atlas TopoJSON geometry on FIPS code.
     """
     query = """
         SELECT
@@ -26,25 +24,19 @@ async def counties_geojson(
             cds.dearth_score,
             cds.dearth_label,
             cds.provider_count,
-            cds.provider_density,
-            ST_AsGeoJSON(cds.boundary, 6)::text AS geojson
+            cds.provider_density
         FROM county_dearth_summary cds
         WHERE cds.specialty = :specialty
-          AND cds.boundary IS NOT NULL
         ORDER BY cds.fips
     """
     rows = await database.fetch_all(query, {"specialty": specialty})
 
     features = []
     for r in rows:
-        geom_str = r["geojson"]
-        if not geom_str:
-            continue
-        geometry = json.loads(geom_str)
         features.append(
             {
                 "type": "Feature",
-                "geometry": geometry,
+                "geometry": None,
                 "properties": {
                     "fips": r["fips"],
                     "name": r["name"],

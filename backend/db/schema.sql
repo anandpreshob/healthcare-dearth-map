@@ -98,7 +98,7 @@ CREATE INDEX idx_dearth_specialty ON dearth_scores(specialty_code);
 CREATE INDEX idx_dearth_score ON dearth_scores(dearth_score DESC);
 CREATE INDEX idx_dearth_geo ON dearth_scores(geo_type, geo_id);
 
--- Materialized view for fast county-level queries
+-- Materialized view for fast county-level queries (no geometry — frontend uses us-atlas)
 CREATE MATERIALIZED VIEW county_dearth_summary AS
 SELECT
     c.fips,
@@ -109,8 +109,7 @@ SELECT
     ds.provider_count,
     ds.provider_density,
     ds.dearth_score,
-    ds.dearth_label,
-    c.boundary
+    ds.dearth_label
 FROM counties c
 CROSS JOIN specialties s
 LEFT JOIN dearth_scores ds

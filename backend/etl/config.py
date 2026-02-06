@@ -1,4 +1,4 @@
-"""ETL configuration: database connection and constants."""
+"""ETL configuration: database connection, paths, and constants."""
 
 import os
 from dotenv import load_dotenv
@@ -9,6 +9,10 @@ DATABASE_URL = os.getenv(
     "DATABASE_URL",
     "postgresql://dearth:dearth_pass@localhost:5432/dearth_map",
 )
+
+# Data directories (large files on SSD)
+DATA_DIR = os.getenv("DATA_DIR", "/Volumes/Anand-SSD/healthcare-data")
+RAW_DIR = os.path.join(DATA_DIR, "raw")
 
 # Parse DATABASE_URL into components for psycopg2
 def get_db_params() -> dict:
@@ -50,5 +54,3 @@ DEARTH_LABELS = [
     (80, "Significant Shortage"),
     (100, "Severe Shortage"),
 ]
-
-STATES = ["CA", "TX", "NY", "MS", "MT"]

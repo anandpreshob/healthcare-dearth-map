@@ -13,97 +13,192 @@ export default function DetailPanel({ fips, onClose }: DetailPanelProps) {
 
   if (!fips) return null;
 
+  // Compute overall score from first specialty or average
+  const overallScore =
+    county?.specialties?.[0]?.dearth_score ?? null;
+
   return (
-    <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-sm overflow-y-auto max-h-[calc(100vh-12rem)]">
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-semibold">County Detail</h2>
+    <div className="glass-panel w-[360px] max-h-[calc(100vh-6rem)] flex flex-col animate-slide-in-right">
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 pb-3 border-b border-white/[0.06]">
+        <h2 className="text-sm font-semibold text-text-primary">
+          County Detail
+        </h2>
         <button
           onClick={onClose}
-          className="text-gray-400 hover:text-gray-600 text-xl leading-none"
+          className="text-text-muted hover:text-text-primary text-lg leading-none w-6 h-6 flex items-center justify-center rounded hover:bg-white/[0.05] transition-colors"
           aria-label="Close detail panel"
         >
           &times;
         </button>
       </div>
 
-      {isLoading && <p className="text-sm text-gray-500">Loading...</p>}
-      {error && (
-        <p className="text-sm text-red-500">Failed to load county data.</p>
-      )}
-
-      {county && (
-        <div className="space-y-3">
-          <div>
-            <h3 className="font-semibold text-base">
-              {county.name}, {county.state}
-            </h3>
-            <p className="text-xs text-gray-500">FIPS: {county.fips}</p>
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {isLoading && (
+          <div className="flex items-center gap-2 text-text-muted text-sm py-8 justify-center">
+            <svg
+              className="w-4 h-4 animate-spin"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeDasharray="32"
+                strokeLinecap="round"
+              />
+            </svg>
+            Loading...
           </div>
+        )}
 
-          <div className="grid grid-cols-2 gap-2 text-sm">
-            <div className="bg-gray-50 rounded p-2">
-              <div className="text-gray-500 text-xs">Population</div>
-              <div className="font-medium">
-                {county.population?.toLocaleString() ?? "N/A"}
-              </div>
-            </div>
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 text-sm text-red-400">
+            Failed to load county data.
           </div>
+        )}
 
-          {county.specialties.length > 0 && (
+        {county && (
+          <>
+            {/* County info */}
             <div>
-              <h4 className="text-sm font-semibold mb-1">
-                Scores by Specialty
-              </h4>
-              <div className="border rounded overflow-hidden">
-                <table className="w-full text-xs">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="text-left p-1.5">Specialty</th>
-                      <th className="text-right p-1.5">Providers</th>
-                      <th className="text-right p-1.5">Score</th>
-                      <th className="text-right p-1.5">vs State</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {county.specialties.map((ss) => (
-                      <tr key={ss.code} className="border-t">
-                        <td className="p-1.5">{ss.name}</td>
-                        <td className="text-right p-1.5">
-                          {ss.provider_count ?? 0}
-                        </td>
-                        <td className="text-right p-1.5">
-                          {ss.dearth_score != null ? (
-                            <span className="inline-flex items-center gap-1">
-                              <span
-                                className="inline-block w-2 h-2 rounded-full"
-                                style={{
-                                  backgroundColor: getColorForScore(
-                                    ss.dearth_score
-                                  ),
-                                }}
-                              />
-                              {Math.round(ss.dearth_score)}
-                            </span>
-                          ) : (
-                            "N/A"
-                          )}
-                        </td>
-                        <td className="text-right p-1.5 text-gray-500">
-                          {ss.dearth_score != null && ss.state_avg_score != null
-                            ? `${(ss.dearth_score - ss.state_avg_score) >= 0 ? "+" : ""}${(
-                                ss.dearth_score - ss.state_avg_score
-                              ).toFixed(1)}`
-                            : ""}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <h3 className="font-semibold text-base text-text-primary">
+                {county.name}, {county.state}
+              </h3>
+              <p className="text-[11px] text-text-muted mt-0.5">
+                FIPS: {county.fips}
+              </p>
+            </div>
+
+            {/* Stats grid */}
+            <div className="grid grid-cols-2 gap-2">
+              <div className="bg-surface-700/80 rounded-lg p-3">
+                <div className="text-[10px] text-text-muted uppercase tracking-wider">
+                  Population
+                </div>
+                <div className="text-lg font-semibold text-text-primary mt-0.5">
+                  {county.population?.toLocaleString() ?? "N/A"}
+                </div>
+              </div>
+              <div className="bg-surface-700/80 rounded-lg p-3">
+                <div className="text-[10px] text-text-muted uppercase tracking-wider">
+                  Overall Score
+                </div>
+                <div className="flex items-center gap-2 mt-0.5">
+                  {overallScore != null ? (
+                    <>
+                      <span
+                        className="w-3 h-3 rounded-full"
+                        style={{
+                          backgroundColor: getColorForScore(overallScore),
+                        }}
+                      />
+                      <span className="text-lg font-semibold text-text-primary">
+                        {Math.round(overallScore)}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-lg font-semibold text-text-muted">
+                      N/A
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
-          )}
-        </div>
-      )}
+
+            {/* Specialty scores table */}
+            {county.specialties.length > 0 && (
+              <div>
+                <h4 className="text-xs font-semibold text-text-secondary mb-2 uppercase tracking-wider">
+                  Scores by Specialty
+                </h4>
+                <div className="border border-white/[0.06] rounded-lg overflow-hidden">
+                  <table className="w-full text-xs">
+                    <thead className="bg-surface-700/80">
+                      <tr>
+                        <th className="text-left p-2 text-text-muted font-medium">
+                          Specialty
+                        </th>
+                        <th className="text-right p-2 text-text-muted font-medium">
+                          Providers
+                        </th>
+                        <th className="text-right p-2 text-text-muted font-medium">
+                          Score
+                        </th>
+                        <th className="text-right p-2 text-text-muted font-medium">
+                          vs State
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {county.specialties.map((ss) => {
+                        const diff =
+                          ss.dearth_score != null && ss.state_avg_score != null
+                            ? ss.dearth_score - ss.state_avg_score
+                            : null;
+                        return (
+                          <tr
+                            key={ss.code}
+                            className="border-t border-white/[0.06] hover:bg-white/[0.03]"
+                          >
+                            <td className="p-2 text-text-primary">
+                              {ss.name}
+                            </td>
+                            <td className="text-right p-2 font-mono text-text-secondary">
+                              {ss.provider_count ?? 0}
+                            </td>
+                            <td className="text-right p-2">
+                              {ss.dearth_score != null ? (
+                                <span className="inline-flex items-center gap-1">
+                                  <span
+                                    className="inline-block w-2 h-2 rounded-full"
+                                    style={{
+                                      backgroundColor: getColorForScore(
+                                        ss.dearth_score
+                                      ),
+                                    }}
+                                  />
+                                  <span className="font-mono text-text-primary">
+                                    {Math.round(ss.dearth_score)}
+                                  </span>
+                                </span>
+                              ) : (
+                                <span className="text-text-muted">N/A</span>
+                              )}
+                            </td>
+                            <td className="text-right p-2 font-mono">
+                              {diff != null ? (
+                                <span
+                                  className={
+                                    diff > 0
+                                      ? "text-red-400"
+                                      : diff < 0
+                                      ? "text-green-400"
+                                      : "text-text-muted"
+                                  }
+                                >
+                                  {diff >= 0 ? "+" : ""}
+                                  {diff.toFixed(1)}
+                                </span>
+                              ) : (
+                                ""
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
