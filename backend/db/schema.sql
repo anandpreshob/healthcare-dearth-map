@@ -78,6 +78,12 @@ CREATE TABLE dearth_scores (
     drive_time_minutes FLOAT,
     wait_time_days FLOAT,
 
+    -- Nearest provider info (for OSRM routing)
+    nearest_provider_npi VARCHAR(10),
+    nearest_provider_lon FLOAT,
+    nearest_provider_lat FLOAT,
+    drive_time_is_estimated BOOLEAN DEFAULT FALSE,
+
     -- Scores (0-100, higher = worse access)
     density_score FLOAT,
     distance_score FLOAT,

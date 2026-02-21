@@ -33,5 +33,19 @@ services:
     volumes:
       - ./backend:/app/backend
 
+  osrm:
+    image: osrm/osrm-backend:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      - /Volumes/Anand-SSD/healthcare-data/osrm:/data:ro
+    command: osrm-routed --algorithm mld /data/us-roads.osrm
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:5000/route/v1/driving/-73.98,40.74;-73.97,40.75 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+
 volumes:
   pgdata:

@@ -90,23 +90,34 @@ def run(conn):
                 # No providers for this specialty: leave distances at 999
                 continue
 
-            # Update nearest distance and avg top-3 distance for all counties
+            # Update nearest distance, avg top-3 distance, and nearest provider info
             # Uses PostGIS KNN operator (<->) with GIST index for fast lookups
             cur.execute("""
                 UPDATE dearth_scores ds SET
                     nearest_distance_miles = sub.nearest_miles,
                     avg_distance_top3_miles = sub.avg_top3_miles,
-                    drive_time_minutes = sub.nearest_miles * 1.5
+                    drive_time_minutes = sub.nearest_miles * 1.5,
+                    nearest_provider_npi = sub.nearest_npi,
+                    nearest_provider_lon = sub.nearest_lon,
+                    nearest_provider_lat = sub.nearest_lat,
+                    drive_time_is_estimated = FALSE
                 FROM (
                     SELECT c.fips,
                         nearest.d_miles AS nearest_miles,
+                        nearest.npi AS nearest_npi,
+                        nearest.lon AS nearest_lon,
+                        nearest.lat AS nearest_lat,
                         top3.avg_miles AS avg_top3_miles
                     FROM counties c
                     LEFT JOIN LATERAL (
-                        SELECT ST_Distance(
-                            c.centroid::geography,
-                            p.location::geography
-                        ) / 1609.34 AS d_miles
+                        SELECT
+                            ST_Distance(
+                                c.centroid::geography,
+                                p.location::geography
+                            ) / 1609.34 AS d_miles,
+                            p.npi,
+                            ST_X(p.location) AS lon,
+                            ST_Y(p.location) AS lat
                         FROM providers p
                         WHERE %(spec)s = ANY(p.specialties)
                           AND p.is_active = TRUE

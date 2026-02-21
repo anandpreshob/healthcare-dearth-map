@@ -36,15 +36,13 @@ def get_db_params() -> dict:
         "port": int(port),
     }
 
-# Dearth score weights
-WEIGHT_DENSITY = 0.4
-WEIGHT_DISTANCE = 0.3
-WEIGHT_DRIVETIME = 0.2
-WEIGHT_WAITTIME = 0.1
+# Dearth score weights (density + drive time only)
+WEIGHT_DENSITY = 0.6
+WEIGHT_DRIVETIME = 0.4
 
-# Default proxy values for MVP
-DRIVETIME_FACTOR = 1.5  # minutes = 1.5 * distance_miles
-DEFAULT_WAITTIME_SCORE = 50.0
+# OSRM routing
+OSRM_URL = os.getenv("OSRM_URL", "http://localhost:5000")
+DRIVETIME_PROXY_FACTOR = 2.0  # fallback: minutes = 2.0 * distance_miles
 
 # Dearth label thresholds
 DEARTH_LABELS = [

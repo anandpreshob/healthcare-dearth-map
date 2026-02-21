@@ -6,7 +6,8 @@ Connects to the database and runs:
 3. load_zipcodes - parse ZCTA Gazetteer + crosswalk -> zipcodes table
 4. load_providers - parse NPPES CSV (chunked) -> providers table
 5. compute_metrics - calculate per-county provider metrics
-6. compute_scores - compute dearth scores from metrics
+6. compute_drivetimes - query OSRM for actual drive times (optional)
+7. compute_scores - compute dearth scores from metrics
 """
 
 import argparse
@@ -20,10 +21,11 @@ from . import load_counties
 from . import load_zipcodes
 from . import load_providers
 from . import compute_metrics
+from . import compute_drivetimes
 from . import compute_scores
 
 
-def run(skip_download: bool = False):
+def run(skip_download: bool = False, skip_drivetimes: bool = False):
     """Execute the full ETL pipeline."""
     print("=" * 60)
     print("Healthcare Dearth Map - Real Data ETL Pipeline")
@@ -36,7 +38,7 @@ def run(skip_download: bool = False):
     else:
         print("[SKIP] Data download (--skip-download)")
 
-    # Step 2-6: Database operations
+    # Step 2-7: Database operations
     db_params = get_db_params()
     print(f"Connecting to database: {db_params['dbname']}@{db_params['host']}:{db_params['port']}")
 
@@ -54,7 +56,13 @@ def run(skip_download: bool = False):
         # Step 5: Compute metrics
         compute_metrics.run(conn)
 
-        # Step 6: Compute dearth scores
+        # Step 6: Compute drive times via OSRM
+        if not skip_drivetimes:
+            compute_drivetimes.run(conn)
+        else:
+            print("[SKIP] Drive time computation (--skip-drivetimes)")
+
+        # Step 7: Compute dearth scores
         compute_scores.run(conn)
 
     finally:
@@ -73,5 +81,10 @@ if __name__ == "__main__":
         action="store_true",
         help="Skip downloading data files (use existing files on SSD)",
     )
+    parser.add_argument(
+        "--skip-drivetimes",
+        action="store_true",
+        help="Skip OSRM drive time computation (use proxy values)",
+    )
     args = parser.parse_args()
-    run(skip_download=args.skip_download)
+    run(skip_download=args.skip_download, skip_drivetimes=args.skip_drivetimes)
