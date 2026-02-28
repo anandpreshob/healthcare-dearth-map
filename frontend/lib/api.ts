@@ -74,18 +74,10 @@ export async function searchLocations(query: string): Promise<SearchResult[]> {
   const q = query.toLowerCase();
   const results: SearchResult[] = [];
 
-  // Search counties by name (case-insensitive substring match)
+  // Search counties by name (case-insensitive substring match) or FIPS code
   for (const c of index.counties) {
     if (c.label.toLowerCase().includes(q) || c.id.includes(q)) {
       results.push({ type: "county", id: c.id, label: c.label });
-      if (results.length >= 10) return results;
-    }
-  }
-
-  // Search zip codes by prefix
-  for (const z of index.zipcodes) {
-    if (z.id.startsWith(q)) {
-      results.push({ type: "zipcode", id: z.id, label: z.label });
       if (results.length >= 10) return results;
     }
   }

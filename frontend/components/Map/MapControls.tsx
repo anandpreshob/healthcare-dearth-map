@@ -67,7 +67,7 @@ export default function MapControls({
           <input
             ref={inputRef}
             type="text"
-            placeholder="Search counties or zip codes..."
+            placeholder="Search counties..."
             className="w-full rounded-lg border border-white/[0.08] bg-surface-700 pl-8 pr-3 py-1.5 text-sm text-text-primary placeholder-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
             value={query}
             onChange={(e) => {

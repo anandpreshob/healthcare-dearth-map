@@ -76,12 +76,14 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* Controls (specialty + search) */}
-        <MapControls
-          specialty={specialty}
-          onSpecialtyChange={setSpecialty}
-          onCountySelect={handleCountySelect}
-        />
+        {/* Controls (specialty + search) — z-10 so search dropdown overlays panels below */}
+        <div className="relative z-10">
+          <MapControls
+            specialty={specialty}
+            onSpecialtyChange={setSpecialty}
+            onCountySelect={handleCountySelect}
+          />
+        </div>
 
         {/* How to use */}
         <div className="glass-panel p-3 animate-fade-in">
