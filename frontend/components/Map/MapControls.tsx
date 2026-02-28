@@ -21,7 +21,7 @@ export default function MapControls({
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="glass-panel p-3 w-72 space-y-3 animate-fade-in">
+    <div className="glass-panel p-3 space-y-3 animate-fade-in">
       <div className="flex items-center justify-between">
         <span className="text-xs font-medium text-text-secondary uppercase tracking-wider">
           Filters

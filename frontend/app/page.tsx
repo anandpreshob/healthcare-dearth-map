@@ -60,7 +60,7 @@ export default function HomePage() {
       )}
 
       {/* Left sidebar panel — always visible */}
-      <div className="absolute top-4 left-4 bottom-6 z-30 w-72 flex flex-col gap-3 overflow-y-auto">
+      <div className="absolute top-4 left-4 z-30 w-64 flex flex-col gap-3">
         {/* About section */}
         <div className="glass-panel p-3 animate-fade-in">
           <h2 className="text-sm font-semibold text-text-primary mb-1.5">
