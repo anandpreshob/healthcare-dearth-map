@@ -122,7 +122,7 @@ export default function HomePage() {
               <span className="text-text-secondary shrink-0">4.</span>
               <span>
                 <span className="text-text-secondary font-medium">Search</span>{" "}
-                for any county or zip code by name
+                for any county by name
               </span>
             </li>
           </ul>
