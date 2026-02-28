@@ -195,15 +195,8 @@ export default function AboutPage() {
         </h2>
         <ul className="list-disc ml-6 space-y-1 text-text-secondary">
           <li>
-            Currently uses sample data for 5 states (CA, TX, NY, MS, MT) with
-            approximately 200 counties. Full national coverage is planned.
-          </li>
-          <li>
-            Drive time is approximated as 1.5x distance. Real routing
-            integration (OSRM/Google Maps) is planned.
-          </li>
-          <li>
-            Wait time data is not yet available and uses a default value.
+            Provider counts are based on NPPES data and may not reflect
+            current practice status for all providers.
           </li>
           <li>
             Provider counts are based on practice location, not where patients

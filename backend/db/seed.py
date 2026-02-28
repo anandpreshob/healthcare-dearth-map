@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Entry point to seed the database with sample data and compute dearth scores.
+"""Entry point to seed the database with real NPPES/Census data and compute dearth scores.
 
 Usage:
     python -m backend.db.seed
