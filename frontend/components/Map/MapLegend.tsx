@@ -2,7 +2,7 @@
 
 export default function MapLegend() {
   return (
-    <div className="glass-panel p-3 w-64 animate-fade-in">
+    <div className="glass-panel p-3 animate-fade-in">
       <div className="flex items-center justify-between mb-2">
         <span className="text-xs font-medium text-text-secondary uppercase tracking-wider">
           Dearth Score
