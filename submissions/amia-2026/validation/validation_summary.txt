@@ -1,0 +1,29 @@
+======================================================================
+HPSA VALIDATION SUMMARY
+======================================================================
+
+--- PRIMARY CARE ---
+Counties: 3109 total, 814 HPSA-designated
+Mean Dearth Score: HPSA = 60.6, Non-HPSA = 46.3
+Point-biserial r = 0.2892 (p = 5.85e-61)
+Mann-Whitney U = 1283010 (p = 6.13e-57)
+Spearman rho = 0.0098 (p = 0.7792206573863052)
+ROC AUC = 0.6868
+Chi-square = 246.0 (p = 4.69e-52)
+
+--- MENTAL HEALTH ---
+Counties: 3109 total, 1543 HPSA-designated
+Mean Dearth Score: HPSA = 75.3, Non-HPSA = 51.5
+Point-biserial r = 0.3641 (p = 4.39e-98)
+Mann-Whitney U = 1771193 (p = 2.14e-112)
+Spearman rho = 0.1617 (p = 1.6578679364967893e-10)
+ROC AUC = 0.7330
+Chi-square = 420.7 (p = 9.53e-90)
+
+======================================================================
+INTERPRETATION
+======================================================================
+AUC > 0.7 = acceptable discrimination; > 0.8 = excellent.
+Point-biserial r > 0.3 with p < 0.01 indicates meaningful correlation.
+Spearman rho > 0.3 indicates ordinal agreement between scoring systems.
+Significant chi-square (p < 0.05) shows Dearth Labels are not independent of HPSA status.
