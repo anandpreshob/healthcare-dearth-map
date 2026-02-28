@@ -15,6 +15,7 @@ export function useSearch() {
     queryKey: ["search", debouncedQuery],
     queryFn: () => searchLocations(debouncedQuery),
     enabled: debouncedQuery.length >= 2,
+    staleTime: Infinity,
   });
 
   return { query, setQuery, results };

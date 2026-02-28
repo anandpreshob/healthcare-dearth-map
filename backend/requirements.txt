@@ -10,3 +10,7 @@ python-dotenv
 pydantic-settings
 orjson
 requests
+scipy
+scikit-learn
+matplotlib
+seaborn

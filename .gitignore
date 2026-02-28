@@ -31,6 +31,7 @@ Thumbs.db
 
 # Data files
 *.csv
+!frontend/public/data/exports/*.csv
 *.parquet
 *.shp
 *.dbf
