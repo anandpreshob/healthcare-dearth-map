@@ -138,6 +138,23 @@ export default function HomePage() {
           <DetailPanel fips={selectedFips} onClose={handleCloseDetail} />
         </div>
       )}
+
+      {/* Disclaimer bar */}
+      <div className="absolute bottom-0 left-0 right-0 z-30 bg-surface-900/80 backdrop-blur-sm border-t border-white/[0.06] px-4 py-1.5">
+        <p className="text-[10px] text-text-muted text-center">
+          For research and educational purposes only. Not a substitute for
+          professional medical advice. Data derived from public sources (NPPES,
+          Census, OpenStreetMap). Provided &ldquo;as is&rdquo; with no warranty.{" "}
+          <a
+            href="https://github.com/anandpreshob/healthcare-dearth-map/blob/main/LICENSE"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-text-secondary"
+          >
+            MIT License
+          </a>
+        </p>
+      </div>
     </div>
   );
 }

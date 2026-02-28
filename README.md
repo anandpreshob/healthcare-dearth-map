@@ -323,6 +323,14 @@ The frontend serves pre-exported data files from `frontend/public/data/`. These 
 | `search_index.json` | 1 | Counties + zip codes sorted by population (for client-side search) |
 | `exports/dearth_county_{code}.csv` | 15 | Pre-generated CSV exports |
 
+## Disclaimer
+
+**This tool is for research and educational purposes only.** It is not a substitute for professional medical advice, diagnosis, or treatment. The Dearth Scores and visualizations are derived from publicly available datasets and computational models that may not reflect current real-world conditions. Users should not make healthcare, policy, or business decisions based solely on this tool without independent verification.
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE). You are free to use, modify, and distribute the code and data with attribution. The software is provided "as is", without warranty of any kind.
+
 ## Target Publications
 
 - AMIA Annual Symposium 2026

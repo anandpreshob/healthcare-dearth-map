@@ -467,15 +467,52 @@ export default function AboutPage() {
         </ul>
       </section>
 
-      {/* Credits */}
+      {/* Disclaimer */}
+      <section className="space-y-3">
+        <h2 className="text-xl font-semibold text-text-primary">
+          Disclaimer
+        </h2>
+        <div className="bg-surface-700/60 rounded-lg p-4 border border-white/[0.06]">
+          <p className="text-text-secondary leading-relaxed text-sm">
+            <strong className="text-text-primary">
+              For research and educational purposes only.
+            </strong>{" "}
+            The Healthcare Dearth Map is not a substitute for professional
+            medical advice, diagnosis, or treatment. The Dearth Scores and
+            visualizations are derived from publicly available datasets and
+            computational models that may not reflect current real-world
+            conditions, including whether listed providers are actively
+            practicing, accepting new patients, or participating in specific
+            insurance networks.
+          </p>
+          <p className="text-text-secondary leading-relaxed text-sm mt-3">
+            The authors make no representations or warranties regarding the
+            accuracy, completeness, or reliability of the data, scores, or
+            visualizations. Users should not make healthcare, policy, or
+            business decisions based solely on this tool without independent
+            verification. Use of this software is at your own risk.
+          </p>
+        </div>
+      </section>
+
+      {/* License & Credits */}
       <section className="space-y-3 pb-8">
         <h2 className="text-xl font-semibold text-text-primary">
-          Open Source
+          Open Source &amp; License
         </h2>
         <p className="text-text-secondary leading-relaxed">
-          This project is open source. The full codebase, including the ETL
-          pipeline, data export scripts, and frontend application, is available
-          on{" "}
+          This project is open source under the{" "}
+          <a
+            href="https://github.com/anandpreshob/healthcare-dearth-map/blob/main/LICENSE"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent hover:underline"
+          >
+            MIT License
+          </a>
+          . You are free to use, modify, and distribute the code and data with
+          attribution. The full codebase, including the ETL pipeline, data
+          export scripts, and frontend application, is available on{" "}
           <a
             href="https://github.com/anandpreshob/healthcare-dearth-map"
             target="_blank"
