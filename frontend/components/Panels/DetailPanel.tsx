@@ -110,6 +110,68 @@ export default function DetailPanel({ fips, onClose }: DetailPanelProps) {
               </div>
             </div>
 
+            {/* Enrichment data */}
+            {county.enrichment && (
+              <div className="space-y-2">
+                <h4 className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                  Access &amp; Availability
+                </h4>
+                <div className="grid grid-cols-2 gap-2">
+                  {county.enrichment.pct_accepting_medicare != null && (
+                    <div className="bg-surface-700/80 rounded-lg p-2.5">
+                      <div className="text-[10px] text-text-muted uppercase tracking-wider">
+                        Medicare Acceptance
+                      </div>
+                      <div className="text-sm font-semibold text-text-primary mt-0.5">
+                        {county.enrichment.pct_accepting_medicare}%
+                      </div>
+                    </div>
+                  )}
+                  {county.enrichment.median_ed_wait_minutes != null && (
+                    <div className="bg-surface-700/80 rounded-lg p-2.5">
+                      <div className="text-[10px] text-text-muted uppercase tracking-wider">
+                        ED Wait (Median)
+                      </div>
+                      <div className="text-sm font-semibold text-text-primary mt-0.5">
+                        {county.enrichment.median_ed_wait_minutes} min
+                      </div>
+                    </div>
+                  )}
+                  {county.enrichment.health_center_sites != null &&
+                    county.enrichment.health_center_sites > 0 && (
+                    <div className="bg-surface-700/80 rounded-lg p-2.5">
+                      <div className="text-[10px] text-text-muted uppercase tracking-wider">
+                        Health Centers
+                      </div>
+                      <div className="text-sm font-semibold text-text-primary mt-0.5">
+                        {county.enrichment.health_center_sites}
+                      </div>
+                    </div>
+                  )}
+                  {county.enrichment.pct_ehr_participation != null && (
+                    <div className="bg-surface-700/80 rounded-lg p-2.5">
+                      <div className="text-[10px] text-text-muted uppercase tracking-wider">
+                        EHR Adoption
+                      </div>
+                      <div className="text-sm font-semibold text-text-primary mt-0.5">
+                        {county.enrichment.pct_ehr_participation}%
+                      </div>
+                    </div>
+                  )}
+                </div>
+                {county.enrichment.num_hospitals_reporting != null &&
+                  county.enrichment.num_hospitals_reporting > 0 && (
+                  <p className="text-[10px] text-text-muted">
+                    Based on {county.enrichment.num_hospitals_reporting} reporting
+                    hospital{county.enrichment.num_hospitals_reporting !== 1 ? "s" : ""}
+                    {county.enrichment.total_medicare_providers != null &&
+                      county.enrichment.total_medicare_providers > 0 &&
+                      ` and ${county.enrichment.total_medicare_providers.toLocaleString()} Medicare providers`}
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* Specialty scores table */}
             {county.specialties.length > 0 && (
               <div>

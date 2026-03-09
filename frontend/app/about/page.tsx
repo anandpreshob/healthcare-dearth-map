@@ -104,6 +104,41 @@ export default function AboutPage() {
             </a>{" "}
             designations.
           </li>
+          <li>
+            <strong className="text-text-primary">
+              Enrichment data integration
+            </strong>
+            &nbsp;&mdash; We layer in additional public data sources to provide
+            a more complete picture of healthcare access: Medicare participation
+            rates from the{" "}
+            <a
+              href="https://data.cms.gov/provider-data/dataset/mj5m-pzi6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              CMS Care Compare
+            </a>{" "}
+            database, emergency department wait times from{" "}
+            <a
+              href="https://data.cms.gov/provider-data/topics/hospitals/timely-effective-care"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              CMS Hospital Compare
+            </a>
+            , and community health center locations from{" "}
+            <a
+              href="https://data.hrsa.gov/topics/health-centers"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              HRSA
+            </a>
+            .
+          </li>
         </ol>
       </section>
 
@@ -328,6 +363,45 @@ export default function AboutPage() {
             &mdash; US road network processed with OSRM for drive time routing
           </li>
           <li>
+            <strong className="text-text-primary">Medicare participation:</strong>{" "}
+            <a
+              href="https://data.cms.gov/provider-data/dataset/mj5m-pzi6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              CMS Care Compare (DAC National Downloadable File)
+            </a>{" "}
+            &mdash; Medicare assignment acceptance, EHR participation, and
+            quality measure reporting for individual clinicians
+          </li>
+          <li>
+            <strong className="text-text-primary">ED wait times:</strong>{" "}
+            <a
+              href="https://data.cms.gov/provider-data/topics/hospitals/timely-effective-care"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              CMS Hospital Compare &mdash; Timely &amp; Effective Care
+            </a>{" "}
+            &mdash; Hospital-level emergency department wait time measures
+            (OP-18, ED-1) aggregated to county level
+          </li>
+          <li>
+            <strong className="text-text-primary">Community health centers:</strong>{" "}
+            <a
+              href="https://data.hrsa.gov/topics/health-centers"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              HRSA Health Center Service Delivery Sites
+            </a>{" "}
+            &mdash; Federally Qualified Health Centers (FQHCs) and Look-Alike
+            sites that serve underserved populations regardless of ability to pay
+          </li>
+          <li>
             <strong className="text-text-primary">Validation:</strong>{" "}
             <a
               href="https://data.hrsa.gov/topics/health-workforce/shortage-areas"
@@ -386,9 +460,11 @@ export default function AboutPage() {
             locations or cross-county patient flows.
           </li>
           <li>
-            <strong className="text-text-primary">No wait time data</strong>
-            &nbsp;&mdash; The score does not include appointment wait times, as no
-            reliable nationwide data source currently exists for this metric.
+            <strong className="text-text-primary">Limited wait time data</strong>
+            &nbsp;&mdash; We include hospital emergency department wait times
+            from CMS, but appointment wait times for outpatient visits (e.g.,
+            weeks to see a specialist) are not available from any reliable
+            nationwide public data source.
           </li>
           <li>
             <strong className="text-text-primary">No telehealth</strong>
@@ -415,6 +491,52 @@ export default function AboutPage() {
         <h2 className="text-xl font-semibold text-text-primary">
           Planned Improvements
         </h2>
+
+        <h3 className="text-base font-semibold text-text-primary mt-4">
+          Data Enrichment
+        </h3>
+        <ul className="list-disc ml-6 space-y-2 text-text-secondary">
+          <li>
+            <strong className="text-text-primary">
+              Insurance network coverage
+            </strong>
+            &nbsp;&mdash; Parse machine-readable provider directory files that
+            insurers are required to publish under the Transparency in Coverage
+            Rule. Starting with the top 5 insurers by market share (UnitedHealth,
+            Anthem, Aetna, Cigna, Humana) to compute per-county insurance network
+            coverage rates.
+          </li>
+          <li>
+            <strong className="text-text-primary">
+              New patient acceptance status
+            </strong>
+            &nbsp;&mdash; Enrich provider records using targeted web scraping of
+            aggregator sites (Healthgrades, Vitals, WebMD) via the Brave Search
+            API. Prioritized for providers in high-dearth-score counties to
+            maximize impact per query.
+          </li>
+          <li>
+            <strong className="text-text-primary">
+              Appointment wait time estimation
+            </strong>
+            &nbsp;&mdash; Incorporate Merritt Hawkins annual survey data for
+            specialty-level metro averages, supplemented by HCAHPS patient
+            experience survey data. Long-term: build a predictive model using
+            provider density, drive time, specialty, and urbanicity as features.
+          </li>
+          <li>
+            <strong className="text-text-primary">
+              State Medicaid provider directories
+            </strong>
+            &nbsp;&mdash; Ingest state-level Medicaid provider enrollment files
+            (available as public CSVs from most state Medicaid agencies) to
+            compute Medicaid acceptance rates by county.
+          </li>
+        </ul>
+
+        <h3 className="text-base font-semibold text-text-primary mt-4">
+          Analysis &amp; Visualization
+        </h3>
         <ul className="list-disc ml-6 space-y-2 text-text-secondary">
           <li>
             <strong className="text-text-primary">
@@ -423,23 +545,6 @@ export default function AboutPage() {
             &nbsp;&mdash; Replace OSRM static routing with Google Maps Distance
             Matrix API for real-time drive times that account for current traffic
             conditions, road closures, and construction.
-          </li>
-          <li>
-            <strong className="text-text-primary">
-              Appointment wait time integration
-            </strong>
-            &nbsp;&mdash; Incorporate actual appointment availability data through
-            partnerships with scheduling platforms (e.g., Zocdoc, Healthgrades)
-            or direct provider surveys. This would add a third component to the
-            Dearth Score capturing how long patients wait for care.
-          </li>
-          <li>
-            <strong className="text-text-primary">
-              Provider acceptance &amp; availability
-            </strong>
-            &nbsp;&mdash; Integrate data on whether providers are accepting new
-            patients, their insurance network participation, and office hours to
-            give a more accurate picture of accessible care.
           </li>
           <li>
             <strong className="text-text-primary">
@@ -453,16 +558,57 @@ export default function AboutPage() {
             <strong className="text-text-primary">
               Telehealth overlay
             </strong>
-            &nbsp;&mdash; Layer in broadband availability data to identify where
-            telehealth could bridge physical access gaps, and estimate the impact
-            on effective Dearth Scores.
+            &nbsp;&mdash; Layer in FCC broadband availability data to identify
+            where telehealth could bridge physical access gaps, and estimate the
+            impact on effective Dearth Scores.
           </li>
           <li>
             <strong className="text-text-primary">
               Trend analysis
             </strong>
             &nbsp;&mdash; Track changes over time using monthly NPPES updates to
-            identify areas where provider shortages are worsening or improving.
+            identify areas where provider shortages are worsening or improving,
+            enabling longitudinal studies of healthcare desertification.
+          </li>
+          <li>
+            <strong className="text-text-primary">
+              Multi-factor Dearth Score
+            </strong>
+            &nbsp;&mdash; Expand the composite score to incorporate Medicare
+            acceptance rates, ED wait times, health center availability, and
+            insurance coverage as weighted components alongside density and
+            drive time.
+          </li>
+        </ul>
+
+        <h3 className="text-base font-semibold text-text-primary mt-4">
+          Data Collection Strategy
+        </h3>
+        <p className="text-text-secondary leading-relaxed text-sm">
+          This project exclusively uses publicly available, open-source data.
+          Our strategy for additional data collection follows a tiered approach:
+        </p>
+        <ul className="list-disc ml-6 space-y-2 text-text-secondary text-sm">
+          <li>
+            <strong className="text-text-primary">Tier 1 (Bulk public data):</strong>{" "}
+            CMS Care Compare, HCAHPS, HRSA health center data &mdash; free
+            bulk downloads joined by NPI or geography.
+          </li>
+          <li>
+            <strong className="text-text-primary">Tier 2 (Mandated transparency files):</strong>{" "}
+            Machine-readable insurer provider directories required by CMS
+            &mdash; published as JSON/CSV by all major insurers.
+          </li>
+          <li>
+            <strong className="text-text-primary">Tier 3 (Targeted web enrichment):</strong>{" "}
+            Brave Search API + provider aggregator scraping for new patient
+            status and insurance acceptance, prioritized for underserved areas.
+          </li>
+          <li>
+            <strong className="text-text-primary">Tier 4 (Modeled estimates):</strong>{" "}
+            Statistical models combining survey data (Merritt Hawkins, HCAHPS)
+            with provider density and geographic features to estimate metrics
+            where direct data is unavailable.
           </li>
         </ul>
       </section>

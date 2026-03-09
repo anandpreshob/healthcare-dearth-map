@@ -6,6 +6,9 @@ Downloads to DATA_DIR/raw/:
   3. ZCTA-County Crosswalk (~1MB)
   4. Census ZCTA Gazetteer (~1MB zipped)
   5. Census County Population Estimates (~4MB)
+  6. CMS Care Compare DAC National Downloadable File (~800MB)
+  7. CMS Hospital Timely and Effective Care (~15MB)
+  8. HRSA Health Center Service Delivery Sites (~5MB)
 """
 
 import os
@@ -44,6 +47,21 @@ DOWNLOADS = {
         "url": "https://www2.census.gov/programs-surveys/popest/datasets/2020-2024/counties/totals/co-est2024-alldata.csv",
         "filename": "co-est2024-alldata.csv",
         "description": "Census County Population Estimates",
+    },
+    "cms_care_compare": {
+        "url": "https://data.cms.gov/provider-data/api/1/datastore/query/mj5m-pzi6/0/download?format=csv",
+        "filename": "DAC_NationalDownloadableFile.csv",
+        "description": "CMS Care Compare DAC National Downloadable File",
+    },
+    "cms_hospital_timely_care": {
+        "url": "https://data.cms.gov/provider-data/api/1/datastore/query/yv7e-xc69/0/download?format=csv",
+        "filename": "Timely_and_Effective_Care-Hospital.csv",
+        "description": "CMS Hospital Timely and Effective Care",
+    },
+    "hrsa_health_centers": {
+        "url": "https://data.hrsa.gov/DataDownload/DD_Files/Health_Center_Service_Delivery_and_LookAlike_Sites.csv",
+        "filename": "Health_Center_Service_Delivery_Sites.csv",
+        "description": "HRSA Health Center Service Delivery Sites",
     },
 }
 
@@ -165,6 +183,36 @@ def get_population_csv_path() -> str:
             return os.path.join(RAW_DIR, f)
     raise FileNotFoundError(
         f"Population CSV not found in {RAW_DIR}. Run download_data first."
+    )
+
+
+def get_cms_care_compare_path() -> str:
+    """Find the CMS Care Compare DAC CSV."""
+    path = os.path.join(RAW_DIR, DOWNLOADS["cms_care_compare"]["filename"])
+    if os.path.exists(path):
+        return path
+    raise FileNotFoundError(
+        f"CMS Care Compare CSV not found in {RAW_DIR}. Run download_data first."
+    )
+
+
+def get_cms_hospital_timely_care_path() -> str:
+    """Find the CMS Hospital Timely and Effective Care CSV."""
+    path = os.path.join(RAW_DIR, DOWNLOADS["cms_hospital_timely_care"]["filename"])
+    if os.path.exists(path):
+        return path
+    raise FileNotFoundError(
+        f"CMS Hospital Timely Care CSV not found in {RAW_DIR}. Run download_data first."
+    )
+
+
+def get_hrsa_health_centers_path() -> str:
+    """Find the HRSA Health Center Service Delivery Sites CSV."""
+    path = os.path.join(RAW_DIR, DOWNLOADS["hrsa_health_centers"]["filename"])
+    if os.path.exists(path):
+        return path
+    raise FileNotFoundError(
+        f"HRSA Health Centers CSV not found in {RAW_DIR}. Run download_data first."
     )
 
 

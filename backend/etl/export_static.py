@@ -119,6 +119,33 @@ def export_counties(cur, out, specialty_codes):
         print(f"  counties/counties_{code}.json ({len(rows)} rows)")
 
 
+def _load_enrichment(cur) -> dict:
+    """Load county enrichment data, returning dict keyed by fips."""
+    cur.execute("""
+        SELECT fips,
+               total_medicare_providers, pct_accepting_medicare,
+               pct_ehr_participation, pct_quality_reporting,
+               median_ed_wait_minutes, avg_ed_wait_minutes,
+               num_hospitals_reporting,
+               health_center_sites, health_center_sites_per_100k
+        FROM county_enrichment
+    """)
+    enrichment = {}
+    for row in cur.fetchall():
+        enrichment[row[0]] = {
+            "total_medicare_providers": row[1],
+            "pct_accepting_medicare": _round(row[2]),
+            "pct_ehr_participation": _round(row[3]),
+            "pct_quality_reporting": _round(row[4]),
+            "median_ed_wait_minutes": _round(row[5]),
+            "avg_ed_wait_minutes": _round(row[6]),
+            "num_hospitals_reporting": row[7],
+            "health_center_sites": row[8],
+            "health_center_sites_per_100k": _round(row[9]),
+        }
+    return enrichment
+
+
 def export_details(cur, out):
     """Export bundled county detail file with all specialties."""
     # Pre-compute state averages
@@ -146,6 +173,9 @@ def export_details(cur, out):
     natl_avgs = {}
     for code, avg in cur.fetchall():
         natl_avgs[code] = _round(avg)
+
+    # Load enrichment data
+    enrichment = _load_enrichment(cur)
 
     # Get all counties
     cur.execute(
@@ -238,13 +268,22 @@ def export_details(cur, out):
                         "national_avg_score": natl_avgs.get(spec_code),
                     }
                 )
-        bundle[fips] = {
+
+        # Build county entry with enrichment
+        county_data = {
             "fips": fips,
             "name": name,
             "state": state,
             "population": pop,
             "specialties": spec_list,
         }
+
+        # Add enrichment data if available
+        enrich = enrichment.get(fips)
+        if enrich:
+            county_data["enrichment"] = enrich
+
+        bundle[fips] = county_data
 
     path = os.path.join(out, "details", "all_counties.json")
     with open(path, "w") as f:

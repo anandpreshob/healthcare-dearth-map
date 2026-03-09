@@ -125,6 +125,90 @@ LEFT JOIN dearth_scores ds
 
 CREATE INDEX idx_county_summary_spec ON county_dearth_summary(specialty);
 
+-- CMS Care Compare: Medicare participation and new patient acceptance
+CREATE TABLE cms_care_compare (
+    npi VARCHAR(10) PRIMARY KEY,
+    pac_id VARCHAR(10),
+    last_name VARCHAR(100),
+    first_name VARCHAR(100),
+    credential VARCHAR(20),
+    medical_school VARCHAR(200),
+    graduation_year INTEGER,
+    primary_specialty VARCHAR(200),
+    organization_legal_name VARCHAR(200),
+    org_pac_id VARCHAR(10),
+    num_org_members INTEGER,
+    city VARCHAR(100),
+    state VARCHAR(2),
+    zipcode VARCHAR(10),
+    phone_number VARCHAR(20),
+    accepts_medicare_assignment BOOLEAN,
+    participates_in_ehr BOOLEAN,
+    reported_quality_measures BOOLEAN
+);
+
+CREATE INDEX idx_cms_care_npi ON cms_care_compare(npi);
+CREATE INDEX idx_cms_care_state ON cms_care_compare(state);
+CREATE INDEX idx_cms_care_zip ON cms_care_compare(zipcode);
+
+-- CMS Hospital: Timely and effective care measures (ED wait times)
+CREATE TABLE cms_hospital_timely_care (
+    facility_id VARCHAR(10),
+    facility_name VARCHAR(200),
+    city VARCHAR(100),
+    state VARCHAR(2),
+    zipcode VARCHAR(10),
+    county_name VARCHAR(100),
+    measure_id VARCHAR(30),
+    measure_name VARCHAR(300),
+    score VARCHAR(20),
+    sample INTEGER,
+    start_date VARCHAR(20),
+    end_date VARCHAR(20),
+    PRIMARY KEY (facility_id, measure_id)
+);
+
+CREATE INDEX idx_hospital_timely_state ON cms_hospital_timely_care(state);
+CREATE INDEX idx_hospital_timely_zip ON cms_hospital_timely_care(zipcode);
+CREATE INDEX idx_hospital_timely_measure ON cms_hospital_timely_care(measure_id);
+
+-- HRSA Health Center Service Delivery Sites
+CREATE TABLE hrsa_health_centers (
+    id SERIAL PRIMARY KEY,
+    health_center_type VARCHAR(100),
+    health_center_name VARCHAR(200),
+    site_name VARCHAR(200),
+    site_address VARCHAR(200),
+    site_city VARCHAR(100),
+    site_state VARCHAR(2),
+    site_zipcode VARCHAR(10),
+    site_phone VARCHAR(20),
+    site_web_address VARCHAR(500),
+    operating_hours TEXT,
+    location GEOMETRY(Point, 4326)
+);
+
+CREATE INDEX idx_hrsa_hc_state ON hrsa_health_centers(site_state);
+CREATE INDEX idx_hrsa_hc_zip ON hrsa_health_centers(site_zipcode);
+CREATE INDEX idx_hrsa_hc_geom ON hrsa_health_centers USING GIST(location);
+
+-- County-level aggregated enrichment metrics
+CREATE TABLE county_enrichment (
+    fips VARCHAR(5) PRIMARY KEY REFERENCES counties(fips),
+    -- CMS Care Compare aggregates
+    total_medicare_providers INTEGER DEFAULT 0,
+    pct_accepting_medicare FLOAT,
+    pct_ehr_participation FLOAT,
+    pct_quality_reporting FLOAT,
+    -- Hospital wait time aggregates (minutes)
+    median_ed_wait_minutes FLOAT,
+    avg_ed_wait_minutes FLOAT,
+    num_hospitals_reporting INTEGER DEFAULT 0,
+    -- HRSA health center aggregates
+    health_center_sites INTEGER DEFAULT 0,
+    health_center_sites_per_100k FLOAT
+);
+
 -- Seed specialties
 INSERT INTO specialties (code, name, description, taxonomy_codes) VALUES
     ('primary_care', 'Primary Care', 'Family Medicine, Internal Medicine, General Practice', ARRAY['207Q00000X', '207R00000X', '208D00000X']),

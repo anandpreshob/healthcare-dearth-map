@@ -33,12 +33,25 @@ export interface SpecialtyScore {
   national_avg_score: number | null;
 }
 
+export interface CountyEnrichment {
+  total_medicare_providers: number | null;
+  pct_accepting_medicare: number | null;
+  pct_ehr_participation: number | null;
+  pct_quality_reporting: number | null;
+  median_ed_wait_minutes: number | null;
+  avg_ed_wait_minutes: number | null;
+  num_hospitals_reporting: number | null;
+  health_center_sites: number | null;
+  health_center_sites_per_100k: number | null;
+}
+
 export interface CountyDetail {
   fips: string;
   name: string;
   state: string;
   population: number | null;
   specialties: SpecialtyScore[];
+  enrichment?: CountyEnrichment;
 }
 
 export interface SearchResult {
